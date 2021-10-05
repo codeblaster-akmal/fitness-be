@@ -1,0 +1,9 @@
+[
+  {
+    "name": "MEMBER_ID",
+    "startValue": 1,
+    "prefix": "PFG",
+    "numberofDigit": 5,
+    "startFrom": 0
+  }
+]
