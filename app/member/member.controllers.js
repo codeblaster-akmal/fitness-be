@@ -33,7 +33,6 @@ exports.create = async (req, res, next) => {
             });
         } else {
             try {
-                console.log(7657578587)
                 let response = {};
 
                 const member = req.body;
@@ -57,6 +56,52 @@ exports.create = async (req, res, next) => {
             }
         }
     });
+};
+
+exports.signin = async (req, res, next) => {
+    try {
+        let response = {};
+        const { passcode, user } = req.body;
+        const conditions = { where: { username: user } }
+        const memberUsername = await db.members.findOne(conditions);
+
+        if (memberUsername === null) {
+            const memberId = await db.members.findOne({ where: { memberId: user } });
+            if (memberId === null) {
+                res.status(400).json({ error: 'Invalid username/id' });
+            } else {
+                if (memberId.isSignup == 0) {
+                    await db.members.update({ passcode: passcode, isSignup: true }, { where: { id: memberId.id } });
+                    const data = await db.members.findByPk(memberId.id);
+                    response.data = data;
+                    res.status(HTTP_STATUS_CODES.SUCCESS.POST).json(response);
+                } else {
+                    if (passcode === memberId.passcode) {
+                        response.data = memberId;
+                        res.status(HTTP_STATUS_CODES.SUCCESS.POST).json(response);
+                    } else {
+                        res.status(400).json({ error: 'Invalid passcode' });
+                    }
+                }
+            }
+        } else {
+            if (memberUsername.isSignup == 0) {
+                await db.members.update({ passcode: passcode, isSignup: true }, { where: { id: memberUsername.id } });
+                const data = await db.members.findByPk(memberUsername.id);
+                response.data = data;
+                res.status(HTTP_STATUS_CODES.SUCCESS.POST).json(response);
+            } else {
+                if (passcode === memberUsername.passcode) {
+                    response.data = memberUsername;
+                    res.status(HTTP_STATUS_CODES.SUCCESS.POST).json(response);
+                } else {
+                    res.status(400).json({ error: 'Invalid passcode' });
+                }
+            }
+        }
+    } catch (err) {
+        next(err);
+    }
 };
 
 exports.fetchOne = async (req, res, next) => {

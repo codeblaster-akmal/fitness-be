@@ -8,7 +8,7 @@ module.exports = (sequelize, { DataTypes, Model }) => {
             allowNull: false,
             unique: {
                 args: true,
-                msg: "Id already exists",
+                msg: "Respective member id already exists!",
             }
         },
         firstname: {
@@ -17,7 +17,7 @@ module.exports = (sequelize, { DataTypes, Model }) => {
             validate: {
                 len: {
                     args: [1, 30],
-                    msg: "Maximum firstname length upto 30",
+                    msg: "Character length of 'firstname' should be at most 30",
                 },
             },
         },
@@ -27,7 +27,7 @@ module.exports = (sequelize, { DataTypes, Model }) => {
             validate: {
                 len: {
                     args: [1, 30],
-                    msg: "Maximum lastname length upto 30",
+                    msg: "Character length of 'lastname' should be at most 30",
                 },
             },
         },
@@ -36,12 +36,12 @@ module.exports = (sequelize, { DataTypes, Model }) => {
             allowNull: false,
             unique: {
                 args: true,
-                msg: "Username already exists",
+                msg: "Respective username already exists!",
             },
             validate: {
                 len: {
                     args: [1, 30],
-                    msg: "Maximum username length upto 30",
+                    msg: "Character length of 'username' should be at most 30",
                 },
             },
         },
@@ -50,12 +50,12 @@ module.exports = (sequelize, { DataTypes, Model }) => {
             allowNull: false,
             unique: {
                 args: true,
-                msg: "Phone number already exists",
+                msg: "Respective phone number already exists!",
             },
             validate: {
                 len: {
                     args: [1, 30],
-                    msg: "Maximum Phone length upto 30",
+                    msg: "Character length of 'phone' should be at most 30",
                 },
             },
         },
@@ -65,7 +65,7 @@ module.exports = (sequelize, { DataTypes, Model }) => {
             validate: {
                 len: {
                     args: [1, 10],
-                    msg: "Maximum weight length upto 10",
+                    msg: "Character length of 'weight' should be at most 10",
                 },
             },
         },
@@ -75,7 +75,7 @@ module.exports = (sequelize, { DataTypes, Model }) => {
             validate: {
                 len: {
                     args: [1, 9],
-                    msg: "Maximum age length upto 9",
+                    msg: "Character length of 'age' should be at most 9",
                 },
             },
         },
@@ -93,7 +93,7 @@ module.exports = (sequelize, { DataTypes, Model }) => {
             validate: {
                 len: {
                     args: [0, 40],
-                    msg: "Maximum addressLine1 length upto 40",
+                    msg: "Character length of 'addressLine1' should be at most 40",
                 },
             },
         },
@@ -102,7 +102,7 @@ module.exports = (sequelize, { DataTypes, Model }) => {
             validate: {
                 len: {
                     args: [0, 30],
-                    msg: "Maximum landmark length upto 30",
+                    msg: "Character length of 'landmark' should be at most 30",
                 },
             },
         },
@@ -114,7 +114,7 @@ module.exports = (sequelize, { DataTypes, Model }) => {
             validate: {
                 len: {
                     args: [0, 30],
-                    msg: "Maximum referral length upto 30",
+                    msg: "Character length of 'referral' should be at most 30",
                 },
             },
         },
@@ -123,7 +123,7 @@ module.exports = (sequelize, { DataTypes, Model }) => {
             validate: {
                 len: {
                     args: [0, 30],
-                    msg: 'Maximum aadhaar length upto 30'
+                    msg: "Character length of 'aadhaarNo' should be at most 30"
                 }
             }
         },
