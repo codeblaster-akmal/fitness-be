@@ -34,13 +34,13 @@ db.sequelize = sequelize;
 db.configurations = require("../app/configuration/Configuration.model")(sequelize, Sequelize);
 db.sequences = require("../app/sequence/Sequence.model")(sequelize, Sequelize);
 db.members = require("../app/member/Member.model")(sequelize, Sequelize);
-db.member_in_out_txns = require("../app/memberInOutTxn/MemberInOutTxn.model")(sequelize, Sequelize);
+db.member_tracks = require("../app/memberTrack/memberTrack.model")(sequelize, Sequelize);
 
 
 // All association will go here...
 
 // members-member_in_out_txns
-db.members.hasMany(db.member_in_out_txns, { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' });
-db.member_in_out_txns.belongsTo(db.members);
+db.members.hasMany(db.member_tracks, { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' });
+db.member_tracks.belongsTo(db.members);
 
 module.exports = db;

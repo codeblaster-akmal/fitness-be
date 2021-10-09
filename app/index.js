@@ -5,7 +5,7 @@ const routes = [
     require("./configuration/configuration.routes"),
     require("./sequence/sequence.routes"),
     require("./member/member.routes"),
-    require("./memberInOutTxn/memberInOutTxn.routes")
+    require("./memberTrack/memberTrack.routes")
 ];
 
 module.exports = function router(app) {

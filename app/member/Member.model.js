@@ -143,7 +143,7 @@ module.exports = (sequelize, { DataTypes, Model }) => {
         },
         joinDate: {
             type: DataTypes.DATE,
-            // defaultValue: sequelize.NOW,
+            defaultValue: DataTypes.NOW
         },
     },
         { sequelize, modelName: "member" }
