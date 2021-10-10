@@ -21,6 +21,8 @@ exports.validateMember = async (id, reqBody, res) => {
             res.status(HTTP_STATUS_CODES.FAILURE.BCRYPT).json({
                 error: BCRYPT_ERR_MSGS.NOT_MATCH
             });
+        } else {
+            return true;
         }
     } catch (err) {
         throw err;

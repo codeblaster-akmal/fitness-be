@@ -93,15 +93,16 @@ exports.update = async (req, res, next) => {
         const { passcode, member_track } = req.query;
         const member = req.body;
         let response = {};
-
+        
         if (passcode) {
             member.passcode = await encrypt(member.passcode);
             member.isSignup = true;
         }
 
         if (member_track) {
-            await validateMember(id, member, res);
-            await createMemberTrack(member);
+            const check = await validateMember(id, member, res);
+            if (check) await createMemberTrack(member);
+            if (!check) delete member.isAvailable;
             delete member.passcode;
             delete member.memberId;
         }
