@@ -11,7 +11,8 @@ exports.HTTP_STATUS_CODES = {
     FAILURE: {
         JWT: 400,
         MULTER: 401,
-        VALIDATION: 402,
-        DB: 403,
+        BCRYPT: 402,
+        VALIDATION: 403,
+        DB: 404,
     },
 };

@@ -6,8 +6,10 @@ const { MULTER_ERR_MSGS } = require("../../utils/constants/multerErrorMsgs");
 const { MULTER_FIELD_NAME } = require("../../utils/constants/multerFieldName");
 const { SEQ_NAME } = require("../../utils/constants/sequenceDBTRName");
 const { sequenceGenerator, updateSequence } = require("../../utils/functions/sequenceGenerator");
+const { encrypt } = require("../../utils/middlewares/bcrypt-encrypt");
 const { upload } = require("../../utils/middlewares/multer-fileUpload");
 const { delFile } = require("../../utils/utils");
+const { createMemberTrack, validateMember } = require("./member.utils");
 const imageUpload = upload.single(MULTER_FIELD_NAME.MEMBER_PIC);
 
 exports.fetchAll = async (req, res, next) => {
@@ -58,57 +60,27 @@ exports.create = async (req, res, next) => {
     });
 };
 
-exports.signin = async (req, res, next) => {
-    try {
-        let response = {};
-        const { passcode, user } = req.body;
-        const conditions = { where: { username: user } }
-        const memberUsername = await db.members.findOne(conditions);
-
-        if (memberUsername === null) {
-            const memberId = await db.members.findOne({ where: { memberId: user } });
-            if (memberId === null) {
-                res.status(400).json({ error: 'Invalid username/id' });
-            } else {
-                if (memberId.isSignup == 0) {
-                    await db.members.update({ passcode: passcode, isSignup: true }, { where: { id: memberId.id } });
-                    const data = await db.members.findByPk(memberId.id);
-                    response.data = data;
-                    res.status(HTTP_STATUS_CODES.SUCCESS.POST).json(response);
-                } else {
-                    if (passcode === memberId.passcode) {
-                        response.data = memberId;
-                        res.status(HTTP_STATUS_CODES.SUCCESS.POST).json(response);
-                    } else {
-                        res.status(400).json({ error: 'Invalid passcode' });
-                    }
-                }
-            }
-        } else {
-            if (memberUsername.isSignup == 0) {
-                await db.members.update({ passcode: passcode, isSignup: true }, { where: { id: memberUsername.id } });
-                const data = await db.members.findByPk(memberUsername.id);
-                response.data = data;
-                res.status(HTTP_STATUS_CODES.SUCCESS.POST).json(response);
-            } else {
-                if (passcode === memberUsername.passcode) {
-                    response.data = memberUsername;
-                    res.status(HTTP_STATUS_CODES.SUCCESS.POST).json(response);
-                } else {
-                    res.status(400).json({ error: 'Invalid passcode' });
-                }
-            }
-        }
-    } catch (err) {
-        next(err);
-    }
-};
-
 exports.fetchOne = async (req, res, next) => {
     try {
-        let response = {};
-        const data = await db.members.findByPk(req.params.id);
+        const { id } = req.params;
+        const { attr, signin } = req.query;
+
+        let response = {}, args = { where: {} };
+
+        if (attr) args.attributes = attr;
+
+        if (id !== "null") args.where.id = id;
+
+        if (signin) args.where = {
+            [db.Sequelize.Op.or]: [
+                { memberId: signin },
+                { username: signin }
+            ]
+        };
+
+        const data = await db.members.findOne(args);
         response.data = data;
+
         res.status(HTTP_STATUS_CODES.SUCCESS.GET_PARAMS).json(response);
     } catch (error) {
         next(error);
@@ -117,9 +89,25 @@ exports.fetchOne = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
     try {
-        let response = {};
+        const { id } = req.params;
+        const { passcode, member_track } = req.query;
         const member = req.body;
-        await db.members.update(member, { where: { id: req.params.id } });
+        let response = {};
+
+        if (passcode) {
+            member.passcode = await encrypt(member.passcode);
+            member.isSignup = true;
+        }
+
+        if (member_track) {
+            await validateMember(id, member, res);
+            await createMemberTrack(member);
+            delete member.passcode;
+            delete member.memberId;
+        }
+
+        await db.members.update(member, { where: { id } });
+
         res.status(HTTP_STATUS_CODES.SUCCESS.PUT).json(response);
     } catch (error) {
         next(error);

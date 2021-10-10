@@ -1,7 +1,7 @@
 'use strict';
 
 exports.errorHandler = error => {
-    
+
     let message = "";
 
     if (error.parent) {
@@ -31,6 +31,8 @@ exports.errorHandler = error => {
         } else {
             if (error.error == undefined && error.message == "this.build(...).save is not a function") {
                 message = 'Invalid data format';
+            } if (error.type === "bcrypt") {
+                message = error.message;
             } else {
                 message = "Something went wrong on server";
             }
