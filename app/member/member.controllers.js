@@ -17,7 +17,7 @@ exports.fetchAll = async (req, res, next) => {
         const { attr, sort = "id", order = "asc" } = req.query;
         let response = {}, args = { order: [[sort, order]] };
 
-        if (attr) args.attr = attr;
+        if (attr) args.attributes = attr;
 
         const data = await db.members.findAll(args);
         response.data = data;

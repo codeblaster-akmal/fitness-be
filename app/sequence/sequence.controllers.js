@@ -8,7 +8,7 @@ exports.fetchAll = async (req, res, next) => {
         const { attr } = req.query;
         let response = {}, args = {};
 
-        if (attr) args.attr = attr;
+        if (attr) args.attributes = attr;
 
         const data = await db.sequences.findAll(args);
         response.data = data;

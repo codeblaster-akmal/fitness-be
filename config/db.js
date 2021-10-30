@@ -35,12 +35,37 @@ db.configurations = require("../app/configuration/Configuration.model")(sequeliz
 db.sequences = require("../app/sequence/Sequence.model")(sequelize, Sequelize);
 db.members = require("../app/member/Member.model")(sequelize, Sequelize);
 db.member_tracks = require("../app/memberTrack/memberTrack.model")(sequelize, Sequelize);
+db.categories = require("../app/category/category.model")(sequelize, Sequelize);
+db.periods = require("../app/period/period.model")(sequelize, Sequelize);
+db.category_period_amounts = require("../app/categoryPeriodAmount/categoryPeriodAmount.model")(sequelize, Sequelize);
+db.member_transactions = require("../app/memberTransaction/memberTransaction.model")(sequelize, Sequelize);
+db.memberTransaction_tracks = require("../app/memberTransactionTrack/memberTransactionTrack.model")(sequelize, Sequelize);
 
 
 // All association will go here...
 
-// members-member_in_out_txns
+// members-member_tracks
 db.members.hasMany(db.member_tracks, { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' });
 db.member_tracks.belongsTo(db.members);
+
+// categories-category_period_amounts
+db.categories.hasMany(db.category_period_amounts, { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' });
+db.category_period_amounts.belongsTo(db.categories);
+
+// periods-category_period_amounts
+db.periods.hasMany(db.category_period_amounts, { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' });
+db.category_period_amounts.belongsTo(db.periods);
+
+// members-member_transactions
+db.members.hasMany(db.member_transactions, { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' });
+db.member_transactions.belongsTo(db.members);
+
+// category_period_amounts-member_transactions
+db.category_period_amounts.hasMany(db.member_transactions, { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' });
+db.member_transactions.belongsTo(db.category_period_amounts);
+
+// member_transactions-memberTransaction_tracks
+db.member_transactions.hasMany(db.memberTransaction_tracks, { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' });
+db.memberTransaction_tracks.belongsTo(db.member_transactions);
 
 module.exports = db;
