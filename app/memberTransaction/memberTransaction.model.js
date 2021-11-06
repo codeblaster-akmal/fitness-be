@@ -6,6 +6,9 @@ module.exports = (sequelize, { DataTypes, Model }) => {
         amount: {
             type: DataTypes.FLOAT,
         },
+        paidAmount: {
+            type: DataTypes.FLOAT,
+        },
         from: {
             type: DataTypes.DATE,
         },

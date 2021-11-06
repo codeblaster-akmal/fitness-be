@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "memberId": "PFG00001",
+    "firstname": "John",
+    "lastname": "Doe",
+    "username": "john123",
+    "phone": "9889789797",
+    "weight": "45",
+    "age": 23,
+    "gender": "MALE",
+    "vaccinated": false,
+    "addressLine1": null,
+    "landmark": "",
+    "image": null,
+    "referral": "",
+    "aadhaarNo": "",
+    "notes": "",
+    "isAvailable": false,
+    "passcode": null,
+    "isSignup": false,
+    "joinDate": "2021-11-01T02:06:59.000Z"
+  }
+]

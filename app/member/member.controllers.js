@@ -5,6 +5,7 @@ const { HTTP_STATUS_CODES } = require("../../utils/constants/httpStatusCodes");
 const { MULTER_ERR_MSGS } = require("../../utils/constants/multerErrorMsgs");
 const { MULTER_FIELD_NAME } = require("../../utils/constants/multerFieldName");
 const { SEQ_NAME } = require("../../utils/constants/sequenceDBTRName");
+const { SCHEMA } = require("../../utils/db/schema");
 const { sequenceGenerator, updateSequence } = require("../../utils/functions/sequenceGenerator");
 const { encrypt } = require("../../utils/middlewares/bcrypt-encrypt");
 const { upload } = require("../../utils/middlewares/multer-fileUpload");
@@ -63,20 +64,86 @@ exports.create = async (req, res, next) => {
 exports.fetchOne = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const { attr, signin } = req.query;
+        const {
+            attr,
+            signin,
+            member_transactions,
+            member_transactions_attr,
+            member_transaction_tracks,
+            member_transaction_tracks_attr,
+            category_period_amounts,
+            category_period_amounts_attr,
+            categories,
+            categories_attr,
+            periods,
+            periods_attr
+        } = req.query;
 
-        let response = {}, args = { where: {} };
+        let response = {}, args = { where: {} }, includes = [], memberTransactionIncludes = [], categoryPeriodAmountIncludes = [];
+
+        const memberTransactionSchema = {
+            ...SCHEMA.MEMBER_TRANSACTION,
+            attributes: member_transactions_attr
+        }
+
+        const categoryPeriodAmountSchema = {
+            ...SCHEMA.CATEGORY_PERIOD_AMOUNT,
+            attributes: category_period_amounts_attr
+        }
 
         if (attr) args.attributes = attr;
 
         if (id !== "null") args.where.id = id;
 
-        if (signin) args.where = {
-            [db.Sequelize.Op.or]: [
-                { memberId: signin },
-                { username: signin }
-            ]
-        };
+        if (signin) {
+            args.where = {
+                [db.Sequelize.Op.or]: [
+                    { memberId: signin },
+                    { username: signin }
+                ]
+            };
+        }
+
+        if (member_transaction_tracks) {
+            memberTransactionIncludes.push({
+                ...SCHEMA.MEMBER_TRANSACTION_TRACK,
+                attributes: member_transaction_tracks_attr
+            });
+        }
+
+        if (categories) {
+            categoryPeriodAmountIncludes.push({
+                ...SCHEMA.CATEGORY,
+                attributes: categories_attr
+            });
+        }
+
+        if (periods) {
+            categoryPeriodAmountIncludes.push({
+                ...SCHEMA.PERIOD,
+                attributes: periods_attr
+            });
+        }
+
+        if (categoryPeriodAmountIncludes.length) {
+            categoryPeriodAmountSchema.include = categoryPeriodAmountIncludes;
+        }
+
+        if (category_period_amounts) {
+            memberTransactionIncludes.push(categoryPeriodAmountSchema);
+        }
+
+        if (memberTransactionIncludes.length) {
+            memberTransactionSchema.include = memberTransactionIncludes;
+        }
+
+        if (member_transactions) {
+            includes.push(memberTransactionSchema);
+        }
+
+        if (includes.length) {
+            args.include = includes;
+        }
 
         const data = await db.members.findOne(args);
         response.data = data;
@@ -93,7 +160,7 @@ exports.update = async (req, res, next) => {
         const { passcode, member_track } = req.query;
         const member = req.body;
         let response = {};
-        
+
         if (passcode) {
             member.passcode = await encrypt(member.passcode);
             member.isSignup = true;

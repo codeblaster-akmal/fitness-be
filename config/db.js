@@ -39,7 +39,7 @@ db.categories = require("../app/category/category.model")(sequelize, Sequelize);
 db.periods = require("../app/period/period.model")(sequelize, Sequelize);
 db.category_period_amounts = require("../app/categoryPeriodAmount/categoryPeriodAmount.model")(sequelize, Sequelize);
 db.member_transactions = require("../app/memberTransaction/memberTransaction.model")(sequelize, Sequelize);
-db.memberTransaction_tracks = require("../app/memberTransactionTrack/memberTransactionTrack.model")(sequelize, Sequelize);
+db.member_transaction_tracks = require("../app/memberTransactionTrack/memberTransactionTrack.model")(sequelize, Sequelize);
 
 
 // All association will go here...
@@ -64,8 +64,8 @@ db.member_transactions.belongsTo(db.members);
 db.category_period_amounts.hasMany(db.member_transactions, { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' });
 db.member_transactions.belongsTo(db.category_period_amounts);
 
-// member_transactions-memberTransaction_tracks
-db.member_transactions.hasMany(db.memberTransaction_tracks, { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' });
-db.memberTransaction_tracks.belongsTo(db.member_transactions);
+// member_transactions-member_transaction_tracks
+db.member_transactions.hasMany(db.member_transaction_tracks, { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' });
+db.member_transaction_tracks.belongsTo(db.member_transactions);
 
 module.exports = db;

@@ -8,5 +8,14 @@ exports.SCHEMA = {
     },
     PERIOD: {
         model: db.periods,
+    },
+    MEMBER_TRANSACTION: {
+        model: db.member_transactions,
+    },
+    MEMBER_TRANSACTION_TRACK: {
+        model: db.member_transaction_tracks,
+    },
+    CATEGORY_PERIOD_AMOUNT: {
+        model: db.category_period_amounts,
     }
 }
