@@ -88,12 +88,12 @@ module.exports = (sequelize, { DataTypes, Model }) => {
             type: DataTypes.BOOLEAN,
             defaultValue: 1,
         },
-        addressLine1: {
+        address: {
             type: DataTypes.STRING,
             validate: {
                 len: {
                     args: [0, 40],
-                    msg: "Character length of 'addressLine1' should be at most 40",
+                    msg: "Character length of 'address' should be at most 40",
                 },
             },
         },

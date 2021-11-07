@@ -155,31 +155,44 @@ exports.fetchOne = async (req, res, next) => {
 };
 
 exports.update = async (req, res, next) => {
-    try {
-        const { id } = req.params;
-        const { passcode, member_track } = req.query;
-        const member = req.body;
-        let response = {};
+    imageUpload(req, res, async (err) => {
+        if (err) {
+            res.status(HTTP_STATUS_CODES.FAILURE.MULTER).json({
+                error: MULTER_ERR_MSGS.MEMBER_PIC
+            });
+        } else {
+            try {
+                const { id } = req.params;
+                const { passcode, member_track } = req.query;
+                const member = req.body;
+                let response = {};
 
-        if (passcode) {
-            member.passcode = await encrypt(member.passcode);
-            member.isSignup = true;
+                if (passcode) {
+                    member.passcode = await encrypt(member.passcode);
+                    member.isSignup = true;
+                }
+
+                if (member_track) {
+                    const check = await validateMember(id, member, res);
+                    if (check) await createMemberTrack(member);
+                    if (!check) delete member.isAvailable;
+                    delete member.passcode;
+                    delete member.memberId;
+                }
+
+                if (member.existProfilePic && req.file) {
+                    delFile(member.existProfilePic);
+                    member.image = req.file.path;
+                }
+
+                await db.members.update(member, { where: { id } });
+
+                res.status(HTTP_STATUS_CODES.SUCCESS.PUT).json(response);
+            } catch (error) {
+                next(error);
+            }
         }
-
-        if (member_track) {
-            const check = await validateMember(id, member, res);
-            if (check) await createMemberTrack(member);
-            if (!check) delete member.isAvailable;
-            delete member.passcode;
-            delete member.memberId;
-        }
-
-        await db.members.update(member, { where: { id } });
-
-        res.status(HTTP_STATUS_CODES.SUCCESS.PUT).json(response);
-    } catch (error) {
-        next(error);
-    }
+    });
 };
 
 exports.remove = async (req, res, next) => {

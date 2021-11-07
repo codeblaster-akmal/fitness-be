@@ -10,7 +10,7 @@
     "age": 23,
     "gender": "MALE",
     "vaccinated": false,
-    "addressLine1": null,
+    "address": null,
     "landmark": "",
     "image": null,
     "referral": "",
