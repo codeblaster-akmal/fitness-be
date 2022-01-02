@@ -2,6 +2,7 @@ const http = require("http");
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const compression = require('compression')
 const logger = require("../config/winston");
 const config = require("../config");
 const db = require("../config/db");
@@ -18,6 +19,9 @@ function initialize() {
     return new Promise((resolve, reject) => {
         httpServer = http.createServer(app);
 
+        app.use(compression({
+            threshold: 0
+        }))
         app.use(express.json());
         app.use(morgan("combined", { stream: logger.stream }));
         app.use(cors("*"));

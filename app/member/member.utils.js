@@ -4,10 +4,20 @@ const db = require("../../config/db");
 const { BCRYPT_ERR_MSGS } = require("../../utils/constants/bcryptErrorMsgs");
 const { HTTP_STATUS_CODES } = require("../../utils/constants/httpStatusCodes");
 const { decrypt } = require("../../utils/middlewares/bcrypt-encrypt");
+const { createCronJob } = require("../../utils/middlewares/nodeSchedule-cron");
+
+const memberTrackCronJob = async (memberData) => {
+    try {
+        await db.member_tracks.create(memberData);
+    } catch (err) {
+        throw err;
+    }
+}
 
 exports.createMemberTrack = async memberData => {
     try {
         await db.member_tracks.create(memberData);
+        createCronJob(`member${memberData.id}`, new Date(), memberTrackCronJob)
     } catch (err) {
         throw err;
     }
