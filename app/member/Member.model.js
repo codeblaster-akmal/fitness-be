@@ -145,6 +145,10 @@ module.exports = (sequelize, { DataTypes, Model }) => {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW
         },
+        feeStatus: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: 0,
+        },
     },
         { sequelize, modelName: "member" }
     );

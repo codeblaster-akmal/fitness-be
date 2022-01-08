@@ -1,0 +1,22 @@
+[
+  {
+    "key": "PN_FROM",
+    "value": ""
+  },
+  {
+    "key": "PN_TO",
+    "value": ""
+  },
+  {
+    "key": "PN_STATUS",
+    "value": false
+  },
+  {
+    "key": "PN_NOTE",
+    "value": ""
+  },
+  {
+    "key": "QR_CODE_FILE_PATH",
+    "value": ""
+  }
+]

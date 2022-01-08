@@ -174,7 +174,7 @@ exports.update = async (req, res, next) => {
 
                 if (member_track) {
                     const check = await validateMember(id, member, res);
-                    if (check) await createMemberTrack(member);
+                    if (check) await createMemberTrack(id, member);
                     if (!check) delete member.isAvailable;
                     delete member.passcode;
                     delete member.memberId;
