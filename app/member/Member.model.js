@@ -109,15 +109,6 @@ module.exports = (sequelize, { DataTypes, Model }) => {
         image: {
             type: DataTypes.STRING,
         },
-        referral: {
-            type: DataTypes.STRING,
-            validate: {
-                len: {
-                    args: [0, 30],
-                    msg: "Character length of 'referral' should be at most 30",
-                },
-            },
-        },
         aadhaarNo: {
             type: DataTypes.STRING,
             validate: {
