@@ -1,9 +1,9 @@
 [
   {
-    "name": "One day"
+    "name": "1 day"
   },
   {
-    "name": "Monthly"
+    "name": "1 Month"
   },
   {
     "name": "3 Months"
@@ -12,6 +12,6 @@
     "name": "6 Months"
   },
   {
-    "name": "Yearly"
+    "name": "1 Year"
   }
 ]
