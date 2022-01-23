@@ -15,11 +15,12 @@ const imageUpload = upload.single(MULTER_FIELD_NAME.MEMBER_PIC);
 
 exports.fetchAll = async (req, res, next) => {
     try {
-        const { attr, sort = "id", order = "asc" } = req.query;
+        const { attr, sort = "id", order = "asc", member_transactions } = req.query;
         let response = {}, args = { order: [[sort, order]] };
 
         if (attr) args.attributes = attr;
-
+        if (member_transactions) args.include = [{...SCHEMA.MEMBER_TRANSACTION}];
+        
         const data = await db.members.findAll(args);
         response.data = data;
         res.status(HTTP_STATUS_CODES.SUCCESS.GET).json(response);
@@ -185,9 +186,9 @@ exports.update = async (req, res, next) => {
                     member.image = req.file.path;
                 }
 
-                await db.members.update(member, { where: { id } });
+                const updateMember = await db.members.update(member, { where: { id } });
 
-                res.status(HTTP_STATUS_CODES.SUCCESS.PUT).json(response);
+                if(updateMember[0] === 1) res.status(HTTP_STATUS_CODES.SUCCESS.PUT).json(response);
             } catch (error) {
                 next(error);
             }
