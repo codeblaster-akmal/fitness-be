@@ -17,5 +17,8 @@ exports.SCHEMA = {
     },
     CATEGORY_PERIOD_AMOUNT: {
         model: db.category_period_amounts,
+    },
+    MEMBER_TRACK: {
+        model: db.member_tracks,
     }
 }

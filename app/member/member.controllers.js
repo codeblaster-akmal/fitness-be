@@ -77,7 +77,9 @@ exports.fetchOne = async (req, res, next) => {
             categories,
             categories_attr,
             periods,
-            periods_attr
+            periods_attr,
+            member_tracks,
+            member_tracks_attr
         } = req.query;
 
         let response = {}, args = { where: {} }, includes = [], memberTransactionIncludes = [], categoryPeriodAmountIncludes = [];
@@ -85,6 +87,11 @@ exports.fetchOne = async (req, res, next) => {
         const memberTransactionSchema = {
             ...SCHEMA.MEMBER_TRANSACTION,
             attributes: member_transactions_attr
+        }
+
+        const memberTrackSchema = {
+            ...SCHEMA.MEMBER_TRACK,
+            attributes: member_tracks_attr
         }
 
         const categoryPeriodAmountSchema = {
@@ -140,6 +147,10 @@ exports.fetchOne = async (req, res, next) => {
 
         if (member_transactions) {
             includes.push(memberTransactionSchema);
+        }
+
+        if (member_tracks) {
+            includes.push(memberTrackSchema);
         }
 
         if (includes.length) {
