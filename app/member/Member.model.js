@@ -69,15 +69,9 @@ module.exports = (sequelize, { DataTypes, Model }) => {
                 },
             },
         },
-        age: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            validate: {
-                len: {
-                    args: [1, 9],
-                    msg: "Character length of 'age' should be at most 9",
-                },
-            },
+        dob: {
+            type: DataTypes.DATE,
+            allowNull: false
         },
         gender: {
             type: DataTypes.ENUM,
@@ -139,6 +133,9 @@ module.exports = (sequelize, { DataTypes, Model }) => {
         feeStatus: {
             type: DataTypes.BOOLEAN,
             defaultValue: 0,
+        },
+        fileName: {
+            type: DataTypes.STRING,
         },
     },
         { sequelize, modelName: "member" }

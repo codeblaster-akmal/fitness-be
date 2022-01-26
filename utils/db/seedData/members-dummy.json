@@ -7,7 +7,7 @@
     "username": "john123",
     "phone": "9889789797",
     "weight": "45",
-    "age": 23,
+    "dob": "2021-11-01T02:06:59.000Z",
     "gender": "MALE",
     "vaccinated": false,
     "address": null,
