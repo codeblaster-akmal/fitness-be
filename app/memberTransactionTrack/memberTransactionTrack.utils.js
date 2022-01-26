@@ -2,9 +2,9 @@
 
 const db = require("../../config/db");
 
-exports.updateMemberTrack = async memberTrack => {
+exports.updateMemberTransactions = async memberTransaction => {
     try {
-        await db.member_transactions.update(memberTrack, { where: { id: memberTrack.id } });
+        await db.member_transactions.update(memberTransaction, { where: { id: memberTransaction.id } });
     } catch (err) {
     }
 };

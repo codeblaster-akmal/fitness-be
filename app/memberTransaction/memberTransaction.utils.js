@@ -9,3 +9,24 @@ exports.createMemberTransactionTracks = async (memberTrack, memberTransactionId)
         throw err;
     }
 };
+
+exports.updateMemberFeeStatus = async memberId => {
+    try {
+        const memberTransactions = await db.member_transactions.findAll({ where: { memberId } });
+        let feeStatus = false;
+        memberTransactions.forEach(txn => {
+            if (txn.status === "PAID") {
+                if (new Date().toLocaleString() <= new Date(txn.to).toLocaleString()) {
+                    feeStatus = true;
+                } else {
+                    feeStatus = false;
+                }
+            } else {
+                return
+            }
+        });
+        await db.members.update({ feeStatus }, { where: { id: memberId } });
+    } catch (err) {
+        throw err;
+    }
+};

@@ -2,7 +2,8 @@
 
 const db = require("../../config/db");
 const { HTTP_STATUS_CODES } = require("../../utils/constants/httpStatusCodes");
-const { updateMemberTrack } = require("./memberTransactionTrack.utils");
+const { updateMemberFeeStatus } = require("../memberTransaction/memberTransaction.utils");
+const { updateMemberTransactions } = require("./memberTransactionTrack.utils");
 
 exports.fetchAll = async (req, res, next) => {
     try {
@@ -25,8 +26,9 @@ exports.create = async (req, res, next) => {
         const memberTransactionTrack = req.body;
         const data = await db.member_transaction_tracks.create(memberTransactionTrack);
         if (memberTransactionTrack.memberTrack) {
-            await updateMemberTrack(memberTransactionTrack.memberTrack);
+            await updateMemberTransactions(memberTransactionTrack.memberTrack);
         }
+        await updateMemberFeeStatus(memberTransactionTrack.memberId);
         response.data = data;
         res.status(HTTP_STATUS_CODES.SUCCESS.POST).json(response);
     } catch (error) {
