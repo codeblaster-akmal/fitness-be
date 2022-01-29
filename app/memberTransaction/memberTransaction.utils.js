@@ -10,21 +10,35 @@ exports.createMemberTransactionTracks = async (memberTrack, memberTransactionId)
     }
 };
 
+const compareDateFunc = (value) => {
+    var date = value;
+    var dd = String(date.getDate()).padStart(2, '0');
+    var mm = String(date.getMonth() + 1).padStart(2, '0'); 
+    var yyyy = date.getFullYear();
+    
+    return date = `${yyyy}-${mm}-${dd}`;
+};
+
 exports.updateMemberFeeStatus = async memberId => {
     try {
         const memberTransactions = await db.member_transactions.findAll({ where: { memberId } });
         let feeStatus = false;
-        memberTransactions.forEach(txn => {
-            if (txn.status === "PAID") {
-                if (new Date().toLocaleString() <= new Date(txn.to).toLocaleString()) {
-                    feeStatus = true;
+        try {
+            memberTransactions.forEach(txn => {
+                if (txn.status === "PAID") {
+                    if (compareDateFunc(new Date()) <= compareDateFunc(new Date(txn.to))) {
+                        feeStatus = true;
+                        throw 'Break';
+                    } else {
+                        feeStatus = false;
+                    }
                 } else {
-                    feeStatus = false;
+                    return
                 }
-            } else {
-                return
-            }
-        });
+            });
+          } catch (e) {
+            if (e !== 'Break') throw e
+          }
         await db.members.update({ feeStatus }, { where: { id: memberId } });
     } catch (err) {
         throw err;
