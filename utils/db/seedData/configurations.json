@@ -1,11 +1,11 @@
 [
   {
     "key": "PN_FROM",
-    "value": ""
+    "value": "2022-02-01T04:02:01.000Z"
   },
   {
     "key": "PN_TO",
-    "value": ""
+    "value": "2022-03-02T04:02:01.000Z"
   },
   {
     "key": "PN_STATUS",
@@ -13,10 +13,14 @@
   },
   {
     "key": "PN_NOTE",
-    "value": ""
+    "value": "Test notes..."
   },
   {
     "key": "QR_CODE_FILE_PATH",
-    "value": ""
+    "value": "public/images/qrcode/QR_CODE.png"
+  },
+  {
+    "key": "QR_CODE_FILE_NAME",
+    "value": "QR_CODE.png"
   }
 ]

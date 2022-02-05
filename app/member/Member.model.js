@@ -86,8 +86,8 @@ module.exports = (sequelize, { DataTypes, Model }) => {
             type: DataTypes.STRING,
             validate: {
                 len: {
-                    args: [0, 40],
-                    msg: "Character length of 'address' should be at most 40",
+                    args: [0, 80],
+                    msg: "Character length of 'address' should be at most 80",
                 },
             },
         },

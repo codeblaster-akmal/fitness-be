@@ -4,7 +4,11 @@ const multer = require("multer");
 const path = require("path");
 
 const destination = async (req, file, cb) => {
-    return cb(null, './public/images/members');
+    if (req.url === "/configurations") {
+        return cb(null, './public/images/qrcode');
+    } else {
+        return cb(null, './public/images/members');
+    }
 }
 
 const filename = (req, file, cb) => {
