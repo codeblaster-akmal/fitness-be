@@ -32,28 +32,29 @@ exports.create = async (req, res, next) => {
         } else {
             try {
                 let response = {};
-                console.log(8768767868, req.body, req.file)
-                // return
-                // const configuration = req.body;
-                // const { configurations = [] } = configuration;
-                // if (configurations.length) {
-                //     configurations.forEach(async (config) => {
-                //         console.log(876876786800, req.body, req.file)
+                const configuration = req.body;
+                const { configurations = [] } = configuration;
+                const parseConfigurations = JSON.parse(configurations)
+                if (parseConfigurations.length) {
+                    parseConfigurations.forEach(async (config) => {
+                        await db.configurations.update(
+                            { value: config[Object.keys(config)[0]] },
+                            { where: { key: Object.keys(config)[0] } }
+                        );
+                    });
+                }
 
-                //         // await db.configurations.update(
-                //         //     { value: config[Object.keys(config)[0]] },
-                //         //     { where: { key: Object.keys(config)[0] } }
-                //         // );
-                //     });
-                // }
-
-                // if (configuration.existQrCode && req.file) {
-                //     delFile(configuration.existQrCode);
-                //     await db.configurations.update(
-                //         { value: req.file.path },
-                //         { where: { key: "QR_CODE_FILE_PATH" } }
-                //     );
-                // }
+                if (configuration.existQrCode && req.file) {
+                    delFile(configuration.existQrCode);
+                    await db.configurations.update(
+                        { value: req.file.path },
+                        { where: { key: "QR_CODE_FILE_PATH" } }
+                    );
+                    await db.configurations.update(
+                        { value: req.file.originalname },
+                        { where: { key: "QR_CODE_FILE_NAME" } }
+                    );
+                }
 
                 res.status(HTTP_STATUS_CODES.SUCCESS.PUT).json(response);
             } catch (err) {

@@ -65,7 +65,7 @@ db.category_period_amounts.hasMany(db.member_transactions, { onDelete: 'RESTRICT
 db.member_transactions.belongsTo(db.category_period_amounts);
 
 // member_transactions-member_transaction_tracks
-db.member_transactions.hasMany(db.member_transaction_tracks, { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' });
+db.member_transactions.hasMany(db.member_transaction_tracks, { onDelete: 'cascade', hooks: true });
 db.member_transaction_tracks.belongsTo(db.member_transactions);
 
 module.exports = db;
