@@ -14,5 +14,6 @@ exports.HTTP_STATUS_CODES = {
         BCRYPT: 402,
         VALIDATION: 403,
         DB: 404,
+        UN_AUTHORIZED: 405,
     },
 };

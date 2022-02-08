@@ -34,13 +34,13 @@ db.sequelize = sequelize;
 db.configurations = require("../app/configuration/Configuration.model")(sequelize, Sequelize);
 db.sequences = require("../app/sequence/Sequence.model")(sequelize, Sequelize);
 db.members = require("../app/member/Member.model")(sequelize, Sequelize);
-db.member_tracks = require("../app/memberTrack/memberTrack.model")(sequelize, Sequelize);
-db.categories = require("../app/category/category.model")(sequelize, Sequelize);
-db.periods = require("../app/period/period.model")(sequelize, Sequelize);
-db.category_period_amounts = require("../app/categoryPeriodAmount/categoryPeriodAmount.model")(sequelize, Sequelize);
-db.member_transactions = require("../app/memberTransaction/memberTransaction.model")(sequelize, Sequelize);
-db.member_transaction_tracks = require("../app/memberTransactionTrack/memberTransactionTrack.model")(sequelize, Sequelize);
-
+db.member_tracks = require("../app/memberTrack/MemberTrack.model")(sequelize, Sequelize);
+db.categories = require("../app/category/Category.model")(sequelize, Sequelize);
+db.periods = require("../app/period/Period.model")(sequelize, Sequelize);
+db.category_period_amounts = require("../app/categoryPeriodAmount/CategoryPeriodAmount.model")(sequelize, Sequelize);
+db.member_transactions = require("../app/memberTransaction/MemberTransaction.model")(sequelize, Sequelize);
+db.member_transaction_tracks = require("../app/memberTransactionTrack/MemberTransactionTrack.model")(sequelize, Sequelize);
+db.users = require("../app/users/User.model")(sequelize, Sequelize);
 
 // All association will go here...
 

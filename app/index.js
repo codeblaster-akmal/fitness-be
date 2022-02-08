@@ -10,7 +10,9 @@ const routes = [
     require("./period/period.routes"),
     require("./categoryPeriodAmount/categoryPeriodAmount.routes"),
     require("./memberTransaction/memberTransaction.routes"),
-    require("./memberTransactionTrack/memberTransactionTrack.routes")
+    require("./memberTransactionTrack/memberTransactionTrack.routes"),
+    require("./users/user.routes"),
+    require("./auth/auth.routes")
 ];
 
 module.exports = function router(app) {
