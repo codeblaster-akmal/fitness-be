@@ -1,12 +1,29 @@
 'use strict';
 
 const webServer = require("./services/web-server");
+const schedule = require('node-schedule');
+const db = require("./config/db");
+
+const memberTrackCronJob = async () => {
+    try {
+        const data = await db.members.findAll({ where: { isAvailable: 1} });
+        data.map(async (member) => {
+            await db.member_tracks.create({ memberId: member.id, isAvailable: 0, setCurrentDateTime: new Date() });
+            await db.members.update({ isAvailable: 0 }, { where: { id: member.id } });
+        })
+    } catch (err) {
+        throw err;
+    }
+}
 
 async function startup() {
     console.log('Starting application.');
 
     try {
         console.log('Initializing web server.');
+        schedule.scheduleJob('* 1 * * *', function(){
+            memberTrackCronJob()
+        });
         await webServer.initialize();
     } catch (err) {
         // handle specific listen errors with friendly messages
