@@ -3,6 +3,7 @@
 const jwt = require('jsonwebtoken');
 const { CONSTANTS } = require('../constants/dbErrorMsgs');
 const { HTTP_STATUS_CODES } = require('../constants/httpStatusCodes');
+const { JWT_ERR_MSGS } = require('../constants/jwtErrorMsgs');
 require("dotenv").config();
 
 exports.createAccessToken = (payload) => {
@@ -20,7 +21,7 @@ exports.verifyToken = async (req, res, next) => {
         req.jwtToken = decode;
         next();
     } catch (err) {
-        res.status(HTTP_STATUS_CODES.FAILURE.JWT).json({ error: CONSTANTS.JWT_ERROR_MESSAGE });
+        res.status(HTTP_STATUS_CODES.FAILURE.JWT).json({ error: JWT_ERR_MSGS.JWT_ERROR_MESSAGE });
     }
 }
 

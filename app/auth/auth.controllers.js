@@ -1,7 +1,7 @@
 "use strict";
 
 const db = require("../../config/db");
-// const { createAccessToken, createRefreshToken } = require("../../utils/auth/jwt");
+const { createAccessToken } = require("../../utils/middlewares/jwt-secure-api");
 const { HTTP_STATUS_CODES } = require("../../utils/constants/httpStatusCodes");
 const { decrypt } = require("../../utils/middlewares/bcrypt-encrypt");
 
@@ -25,12 +25,9 @@ exports.adminLogin = async (req, res, next) => {
             if (!match) {
                 res.status(HTTP_STATUS_CODES.FAILURE.UN_AUTHORIZED).json({ error: errorMsg });
             } else {
-                // const token = createAccessToken({ data });
-                // const refreshToken = createRefreshToken({ data });
-
+                const token = createAccessToken({ data });
                 response.data = data;
-                // response.token = token;
-                // response.refreshToken = refreshToken;
+                response.token = token;
                 res.status(HTTP_STATUS_CODES.SUCCESS.GET).json(response);
             }
         }

@@ -10,6 +10,7 @@ const api = require("../app");
 const seedRunner = require("../utils/db/seedRunner");
 const { errorHandler } = require("../utils/helpers/dbErrorHandler");
 const { HTTP_STATUS_CODES } = require("../utils/constants/httpStatusCodes");
+const { verifyToken } = require("../utils/middlewares/jwt-secure-api");
 
 const app = express();
 
@@ -26,6 +27,10 @@ function initialize() {
         app.use(morgan("combined", { stream: logger.stream }));
         app.use(cors("*"));
         app.use("/public", express.static("public"));
+        // app.use((req, res, next) => {
+        //     if(req.url === "/admin-login") return next()
+        //     return verifyToken(req, res, next)
+        // });
 
         api(app);
         app.use((err, req, res, next) => {
