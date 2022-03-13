@@ -27,10 +27,10 @@ function initialize() {
         app.use(morgan("combined", { stream: logger.stream }));
         app.use(cors("*"));
         app.use("/public", express.static("public"));
-        // app.use((req, res, next) => {
-        //     if(req.url === "/admin-login") return next()
-        //     return verifyToken(req, res, next)
-        // });
+        app.use((req, res, next) => {
+            if (req.url === "/admin-login") return next()
+            return verifyToken(req, res, next)
+        });
 
         api(app);
         app.use((err, req, res, next) => {
