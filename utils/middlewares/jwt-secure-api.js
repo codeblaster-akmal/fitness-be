@@ -7,7 +7,7 @@ const { JWT_ERR_MSGS } = require('../constants/jwtErrorMsgs');
 require("dotenv").config();
 
 exports.createAccessToken = (payload) => {
-    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' })
+    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET)
 }
 
 exports.createRefreshToken = (payload) => {
