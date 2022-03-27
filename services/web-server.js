@@ -28,7 +28,7 @@ function initialize() {
         app.use(cors("*"));
         app.use("/public", express.static("public"));
         app.use((req, res, next) => {
-            if (req.url === "/admin-login") return next()
+            if (req.url === "/admin-login" || req.url === "/") return next()
             return verifyToken(req, res, next)
         });
 

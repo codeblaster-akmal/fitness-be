@@ -12,7 +12,8 @@ const routes = [
     require("./memberTransaction/memberTransaction.routes"),
     require("./memberTransactionTrack/memberTransactionTrack.routes"),
     require("./users/user.routes"),
-    require("./auth/auth.routes")
+    require("./auth/auth.routes"),
+    require("./dashboard/dashboard.routes")
 ];
 
 module.exports = function router(app) {
