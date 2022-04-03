@@ -21,6 +21,10 @@ exports.fetchAll = async (req, res, next) => {
 
         if (attr) args.attributes = attr;
 
+        if (includes.length) {
+            args.include = includes;
+        }
+
         const data = await db.members.findAll(args);
         response.data = data;
         res.status(HTTP_STATUS_CODES.SUCCESS.GET).json(response);
