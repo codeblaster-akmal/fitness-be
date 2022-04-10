@@ -3,6 +3,7 @@
 const webServer = require("./services/web-server");
 const schedule = require('node-schedule');
 const db = require("./config/db");
+const { updateMemberFeeStatus } = require("./app/memberTransaction/memberTransaction.utils");
 
 const memberTrackCronJob = async () => {
     try {
@@ -10,6 +11,7 @@ const memberTrackCronJob = async () => {
         data.map(async (member) => {
             await db.member_tracks.create({ memberId: member.id, isAvailable: 0, setCurrentDateTime: new Date() });
             await db.members.update({ isAvailable: 0 }, { where: { id: member.id } });
+            await updateMemberFeeStatus(member.id);
         })
     } catch (err) {
         throw err;
