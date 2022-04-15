@@ -16,7 +16,7 @@ const {
 } = process.env;
 
 const configuration = {
-  port: PORT || 8080, // PORT Number
+  port: process.env.PORT ||PORT || 8080, // PORT Number
   logger: {
     file: {
       level: "info",
