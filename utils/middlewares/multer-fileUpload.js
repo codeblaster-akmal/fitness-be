@@ -14,7 +14,7 @@ const destination = async (req, file, cb) => {
 const filename = (req, file, cb) => {
     cb(
         null,
-        new Date().toISOString().replace(/:/, '-').replace(/T/, '-').replace(/\..+/, '').slice(0, -3) +
+        // new Date().toISOString().replace(/:/, '-').replace(/T/, '-').replace(/\..+/, '').slice(0, -3) +
         Math.floor(1000 + Math.random() * 9000) + path.extname(file.originalname)
     );
 }

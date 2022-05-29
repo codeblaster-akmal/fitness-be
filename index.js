@@ -8,10 +8,13 @@ const { updateMemberFeeStatus } = require("./app/memberTransaction/memberTransac
 const memberTrackCronJob = async () => {
     try {
         const data = await db.members.findAll({ where: { isAvailable: 1} });
+        const feeData = await db.members.findAll();
+        feeData.map(async (member) => {
+            await updateMemberFeeStatus(member.id);
+        })
         data.map(async (member) => {
             await db.member_tracks.create({ memberId: member.id, isAvailable: 0, setCurrentDateTime: new Date() });
             await db.members.update({ isAvailable: 0 }, { where: { id: member.id } });
-            await updateMemberFeeStatus(member.id);
         })
     } catch (err) {
         throw err;
