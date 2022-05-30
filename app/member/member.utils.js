@@ -15,6 +15,13 @@ const memberTrackCronJob = async (data) => {
     }
 }
 
+const addTime5h_30m = dateTime => {
+    let minutesToAdd = 330;
+    let currentDate = new Date(dateTime);
+    let futureDate = new Date(currentDate.getTime() + minutesToAdd * 60000);
+    return futureDate
+};
+
 exports.createMemberTrack = async (id, memberData) => {
     try {
         await db.member_tracks.create(memberData);
@@ -23,7 +30,7 @@ exports.createMemberTrack = async (id, memberData) => {
                 date.setTime(date.getTime() + (h * 60 * 60 * 1000));
                 return date;
             }
-            createCronJob(`member${id}`, addHours(new Date(), 5), (args) => {
+            createCronJob(`member${id}`, addHours(addTime5h_30m(new Date()), 5), (args) => {
                 memberTrackCronJob({ id, memberData, ...args })
             })
         } else {
