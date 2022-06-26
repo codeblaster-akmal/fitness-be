@@ -26,10 +26,11 @@ async function startup() {
 
     try {
         console.log('Initializing web server.');
-        schedule.scheduleJob('* 1 * * *', function(){
+        schedule.scheduleJob('* * 2 * * *', function(){
             memberTrackCronJob()
         });
         await webServer.initialize();
+        await webServer.startKeepAlive();
     } catch (err) {
         // handle specific listen errors with friendly messages
         switch (err.code) {
